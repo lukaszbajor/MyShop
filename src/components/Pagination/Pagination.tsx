@@ -8,7 +8,7 @@ export function Pagination({ numberOfPages }: PaginationProps) {
 	const pages = Array(numberOfPages).fill(null);
 	return (
 		<ul className={styles.pagination}>
-			{pages.map((page, index) => {
+			{pages.map((_page, index) => {
 				return (
 					<li key={index}>
 						<NavLink to={`/${index + 1}`}>{index + 1}</NavLink>

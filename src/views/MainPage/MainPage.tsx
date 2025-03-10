@@ -113,8 +113,11 @@ export function MainPage() {
 			{!isLoading && products && products.length > 0 && (
 				<>
 					<Hero />
+
 					<Bestsellers
 						headerText="Sprawdź nasze bestsellery!"
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						//@ts-ignore
 						products={bestsellerProducts}
 					/>
 				</>

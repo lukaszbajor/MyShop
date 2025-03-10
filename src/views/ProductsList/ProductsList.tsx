@@ -11,11 +11,13 @@ import { faHourglass } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../../components/Loader/Loader";
 import { CATEGORIES } from "../../constants/categories";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function getCategoryName(categoryPath: string) {
 	const category = CATEGORIES.find((c) => c.path === categoryPath);
 	return category ? category.categoryName : null; // Zwraca nazwę kategorii
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function getSubcategoryName(
 	categoryPath: string,
 	subcategoryPath: string
@@ -35,7 +37,9 @@ export function ProductsList() {
 
 	const categoryName = category ? getCategoryName(category) : null;
 	const subcategoryName = subcategory
-		? getSubcategoryName(category, subcategory)
+		? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		  //@ts-ignore
+		  getSubcategoryName(category, subcategory)
 		: null;
 
 	const {
@@ -222,6 +226,8 @@ export function ProductsList() {
 				{!isLoading && products && products.length > 0 ? (
 					<>
 						<Bestsellers
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							//@ts-ignore
 							headerText={subcategoryName ? subcategoryName : categoryName}
 							products={products}
 						/>

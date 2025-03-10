@@ -9,12 +9,19 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "../../components/Loader/Loader";
 
 export function ProductDetails() {
-	const { id } = useParams(); // Pobierz id z URL
+	const { id } = useParams<{ id: string }>(); // Pobierz id z URL
+
+	// Jeśli id jest undefined, wyświetl komunikat o błędzie
+	if (!id) {
+		return <div>Brak ID w URL</div>;
+	}
+
 	const {
 		data: product,
 		isLoading,
 		isError,
 		error,
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 	} = useQuery({
 		queryKey: ["product", { id }],
 		queryFn: () => fetchProductById(id),

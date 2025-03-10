@@ -2,8 +2,6 @@ import styles from "./CartProductsList.module.scss";
 import { ProductTypes } from "../../types/ProductTypes";
 import { CoreContent } from "../CoreContent/CoreContent";
 import { CartProduct } from "../CartProduct/CartProduct";
-import { useContext, useEffect, useState } from "react";
-import { CartCountContext } from "../../contexts/CartCountContext";
 
 interface CartProductsListProps {
 	products: ProductTypes[];

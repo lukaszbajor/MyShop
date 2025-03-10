@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // import { supabase } from "../supabaseClient";
 
@@ -16,7 +17,7 @@
 
 import { supabase } from "../supabaseClient";
 
-export const fetchProducts = async ({ queryKey }) => {
+export const fetchProducts = async ({ queryKey }: any) => {
 	const [_key, { category, subcategory, gender }] = queryKey;
 
 	let query = supabase.from("products").select("*");

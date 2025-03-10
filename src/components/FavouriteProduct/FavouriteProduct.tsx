@@ -13,7 +13,7 @@ interface FavouriteProductProps {
 export function FavouriteProduct({ product, onRemove }: FavouriteProductProps) {
 	const { updateCartCount } = useContext(CartCountContext);
 
-	function handleAddToCart(product) {
+	function handleAddToCart(product: ProductTypes) {
 		const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 		if (!cart.find((cartItem: ProductTypes) => cartItem.id === product.id)) {
 			cart.push(product);

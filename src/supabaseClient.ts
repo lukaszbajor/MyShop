@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-//@ts-expect-error
 import { createClient } from "@supabase/supabase-js";
 
 // Wstaw swój URL i klucz publiczny z panelu Supabase
