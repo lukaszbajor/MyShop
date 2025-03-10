@@ -1,0 +1,29 @@
+.breadcrumbs {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+	li {
+		a {
+			font-size: 0.75rem;
+			text-transform: uppercase;
+
+			&:disabled {
+				cursor: not-allowed; // Nie pozwalamy na kliknięcie
+				color: #ccc; // Można zmienić kolor, by pokazać, że jest zablokowane
+			}
+		}
+		&:last-child a {
+			color: $color-theme-main;
+			font-weight: 700;
+		}
+		.icon {
+			margin-left: 0.5rem;
+		}
+		&:last-child .icon {
+			display: none;
+		}
+	}
+}

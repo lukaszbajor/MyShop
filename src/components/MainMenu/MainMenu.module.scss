@@ -1,0 +1,22 @@
+.mainMenu {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+
+	padding: 1rem;
+
+	li {
+		a {
+			text-transform: uppercase;
+			color: $color-text-grey;
+			padding: 1rem 0;
+			display: block;
+			font-weight: 700;
+		}
+		:global(.active) {
+			color: $color-text-default;
+			border-bottom: 3px solid $color-text-default;
+		}
+	}
+}

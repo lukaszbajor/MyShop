@@ -1,0 +1,63 @@
+.favouriteProduct {
+	margin: 0.5em 0;
+	padding: 1rem 0;
+	display: flex;
+	gap: 3rem;
+	border-top: 1px solid $color-text-grey;
+	img {
+		width: 85px;
+		height: 140px;
+	}
+}
+
+.favouriteProductInfo {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+}
+.topRow {
+	display: flex;
+	justify-content: space-between;
+	font-size: 1.25rem;
+	margin-bottom: 1rem;
+	font-weight: 700;
+	h3 {
+		.productName {
+			font-size: 0.75rem;
+			color: $color-theme-main;
+			font-weight: normal;
+			margin-top: 5px;
+			margin-left: 3px;
+		}
+	}
+}
+.priceRow {
+	span {
+		color: $color-text-grey;
+		font-weight: normal;
+	}
+	p {
+		font-weight: 700;
+	}
+}
+.buttonRow {
+	display: flex;
+	gap: 2rem;
+	flex: 1;
+	align-items: flex-end;
+	button {
+		display: flex;
+		border: none;
+		background: none;
+		.icon {
+			margin-right: 0.5rem;
+			width: 1rem;
+			height: 1rem;
+		}
+	}
+	button:nth-child(2) {
+		.icon {
+			color: $color-theme-main;
+		}
+	}
+}

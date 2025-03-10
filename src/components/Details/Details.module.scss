@@ -1,0 +1,24 @@
+.details {
+	width: 50%;
+	padding-right: 1rem;
+	.productName {
+		margin: 0.5rem 0;
+		font-weight: 700;
+	}
+	.price {
+		color: $color-price;
+		font-size: 1.5rem;
+		margin-bottom: 2rem;
+	}
+	.extraInfo {
+		margin-top: 2rem;
+		li {
+			width: 160px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			margin-bottom: 1rem;
+		}
+	}
+}

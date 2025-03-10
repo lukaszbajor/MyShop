@@ -1,0 +1,24 @@
+.categoryMenu {
+	background-color: $color-text-default;
+	width: 100%;
+	ul {
+		width: 100%;
+		max-width: 100rem;
+		margin: 0 auto;
+		padding: 1rem;
+		display: flex;
+		gap: 1rem;
+
+		li {
+			a {
+				color: $color-text-white;
+			}
+			a:global(.active) {
+				text-decoration: underline;
+			}
+		}
+		li:nth-child(5) a {
+			color: $color-theme-main;
+		}
+	}
+}

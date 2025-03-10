@@ -1,0 +1,35 @@
+.cartSummary {
+	display: flex;
+	flex-direction: column;
+	padding-right: 1rem;
+	margin-top: 1rem;
+	gap: 1rem;
+	width: 28rem;
+
+	h2 {
+		border-bottom: 1px solid $color-text-grey;
+		padding-bottom: 1rem;
+	}
+}
+
+.cartRow {
+	display: flex;
+	justify-content: space-between;
+}
+
+.summaryRow {
+	font-weight: 700;
+}
+
+.deliveryInfo {
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem;
+	font-weight: 700;
+	background-color: $color-grey;
+}
+.freeDelivery {
+	color: $color-success;
+	opacity: 0.6;
+	border: 1px solid $color-success;
+}

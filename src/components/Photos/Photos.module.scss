@@ -1,0 +1,19 @@
+.thumbnails {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	img {
+		width: 85px;
+		height: 120px;
+
+		cursor: pointer;
+		&.active {
+			border: 2px solid $color-text-default;
+		}
+	}
+}
+.mainPhoto {
+	width: 700px;
+	height: 500px;
+	object-fit: contain;
+}

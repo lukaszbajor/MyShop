@@ -1,0 +1,33 @@
+.expandableMenu {
+	width: 11rem;
+	margin-top: 1rem;
+	padding-left: 1rem;
+
+	p {
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	li {
+		margin-bottom: 0.5rem;
+		a {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		ul {
+			margin-top: 0.5rem;
+			padding-left: 2rem;
+			li {
+				a:global(.active) {
+					color: $color-theme-main;
+				}
+			}
+		}
+	}
+	a:global(.active) {
+		font-weight: 700;
+	}
+}
+.expanded {
+	transform: rotate(180deg);
+}
