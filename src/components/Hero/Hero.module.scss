@@ -15,3 +15,10 @@
 .describe {
 	margin: 2rem 0;
 }
+
+@media (max-width: 567px) {
+	.wrapper {
+		margin-top: 6rem;
+		margin-left: 1.5rem;
+	}
+}

@@ -27,3 +27,15 @@
 		}
 	}
 }
+
+@media (max-width: 800px) {
+	.breadcrumbs {
+		justify-content: center;
+
+		li {
+			a {
+				font-size: 1rem;
+			}
+		}
+	}
+}

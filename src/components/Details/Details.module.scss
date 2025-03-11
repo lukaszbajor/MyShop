@@ -1,6 +1,8 @@
 .details {
 	width: 50%;
 	padding-right: 1rem;
+	padding-bottom: 20px;
+
 	.productName {
 		margin: 0.5rem 0;
 		font-weight: 700;
@@ -20,5 +22,16 @@
 			gap: 1rem;
 			margin-bottom: 1rem;
 		}
+	}
+}
+
+@media (max-width: 800px) {
+	.details {
+		padding: 10px;
+		padding-bottom: 20px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: 100%;
 	}
 }

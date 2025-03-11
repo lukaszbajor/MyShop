@@ -4,6 +4,19 @@
 .productsWrapper {
 	display: flex;
 	justify-content: space-between;
+	flex-direction: row;
 	flex-wrap: wrap;
 	margin-bottom: 2rem;
+}
+
+@media (max-width: 800px) {
+	.productsWrapper {
+		justify-content: center;
+	}
+}
+
+@media (max-width: 1000px) {
+	.productsWrapper {
+		justify-content: space-evenly;
+	}
 }
