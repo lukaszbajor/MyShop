@@ -62,3 +62,15 @@
 		}
 	}
 }
+
+@media (max-width: 567px) {
+	.buttonRow {
+		justify-content: center;
+		align-items: center;
+	}
+	button {
+		margin-top: 1rem;
+		justify-content: center;
+		align-items: center;
+	}
+}
