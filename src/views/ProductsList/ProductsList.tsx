@@ -244,16 +244,21 @@ export function ProductsList() {
 							flexDirection: "column",
 						}}
 					>
-						<p>
+						<p
+							style={{
+								textAlign: "center",
+								paddingBottom: "3rem",
+							}}
+						>
 							Brak produktów w sklepie. Wróć niebawem, uzupełniamy nasz
 							asortyment systematycznie!
 						</p>
 						<FontAwesomeIcon
 							icon={faHourglass}
 							style={{
-								marginTop: "20px",
-								fontSize: "32px",
+								fontSize: "84px",
 								color: "#0979c8",
+								paddingBottom: "2rem",
 							}}
 						/>
 					</div>
