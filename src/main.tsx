@@ -22,38 +22,41 @@ const queryClient = new QueryClient();
 
 const defaultGender = "womens";
 
-const router = createBrowserRouter([
-	{
-		path: "",
-		element: <Layout />,
-		children: [
-			{
-				path: "/",
-				element: <Navigate to={`/${defaultGender}`} />, // Przekierowanie na domyślny gender, np. womens
-			},
-			{
-				path: "/:gender?",
-				element: <MainPage />,
-			},
-			{
-				path: "/cart",
-				element: <Cart />,
-			},
-			{
-				path: "/favourites",
-				element: <Favourites />,
-			},
-			{
-				path: "/:gender?/:category/:subcategory?",
-				element: <ProductsList />,
-			},
-			{
-				path: "/:gender?/:category/:subcategory/product_details/:id",
-				element: <ProductDetails />,
-			},
-		],
-	},
-]);
+const router = createBrowserRouter(
+	[
+		{
+			path: "",
+			element: <Layout />,
+			children: [
+				{
+					path: "/",
+					element: <Navigate to={`/${defaultGender}`} />, // Przekierowanie na domyślny gender, np. womens
+				},
+				{
+					path: "/:gender?",
+					element: <MainPage />,
+				},
+				{
+					path: "/cart",
+					element: <Cart />,
+				},
+				{
+					path: "/favourites",
+					element: <Favourites />,
+				},
+				{
+					path: "/:gender?/:category/:subcategory?",
+					element: <ProductsList />,
+				},
+				{
+					path: "/:gender?/:category/:subcategory/product_details/:id",
+					element: <ProductDetails />,
+				},
+			],
+		},
+	],
+	{ basename: "/MyShop" }
+);
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>

@@ -2,8 +2,21 @@ import styles from "./FavouriteProduct.module.scss";
 import { ProductTypes } from "../../types/ProductTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartCountContext } from "../../contexts/CartCountContext";
+import { NotificationModal } from "../NotificationModal/NotificationModal";
+
+// const [showNotification, setShowNotification] = useState(false);
+// 	const [notificationMessage, setNotificationMessage] = useState("");
+
+// 	setNotificationMessage("Usunięto produkt z koszyka!");
+// 	setShowNotification(true);
+// 	setTimeout(() => {
+// 		setShowNotification(false); // Ukryj powiadomienie po 3 sekundach
+// 	}, 3000);
+// 	{
+// 		showNotification && <NotificationModal message={notificationMessage} />;
+// 	}
 
 interface FavouriteProductProps {
 	product: ProductTypes;
@@ -11,6 +24,8 @@ interface FavouriteProductProps {
 }
 
 export function FavouriteProduct({ product, onRemove }: FavouriteProductProps) {
+	const [showNotification, setShowNotification] = useState(false);
+	const [notificationMessage, setNotificationMessage] = useState("");
 	const { updateCartCount } = useContext(CartCountContext);
 
 	function handleAddToCart(product: ProductTypes) {
@@ -18,10 +33,18 @@ export function FavouriteProduct({ product, onRemove }: FavouriteProductProps) {
 		if (!cart.find((cartItem: ProductTypes) => cartItem.id === product.id)) {
 			cart.push(product);
 			localStorage.setItem("cart", JSON.stringify(cart));
-			alert("Produkt dodany do koszyka!");
+			setNotificationMessage("Produkt dodany do koszyka.");
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false); // Ukryj powiadomienie po 3 sekundach
+			}, 3000);
 			updateCartCount();
 		} else {
-			alert("Ten produkt jest już w koszyku!");
+			setNotificationMessage("Ten produkt jest już w koszyku.");
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false); // Ukryj powiadomienie po 3 sekundach
+			}, 3000);
 		}
 	}
 
@@ -35,7 +58,11 @@ export function FavouriteProduct({ product, onRemove }: FavouriteProductProps) {
 		// Zapisz zaktualizowaną listę w localStorage
 		localStorage.setItem("favourites", JSON.stringify(favourites));
 
-		alert("Produkt usunięty z ulubionych!");
+		setNotificationMessage("Produkt usunięty z listy ulubionych.");
+		setShowNotification(true);
+		setTimeout(() => {
+			setShowNotification(false); // Ukryj powiadomienie po 3 sekundach
+		}, 3000);
 
 		onRemove(productId);
 	};
@@ -72,6 +99,8 @@ export function FavouriteProduct({ product, onRemove }: FavouriteProductProps) {
 					</button>
 				</div>
 			</div>
+
+			{showNotification && <NotificationModal message={notificationMessage} />}
 		</div>
 	);
 }

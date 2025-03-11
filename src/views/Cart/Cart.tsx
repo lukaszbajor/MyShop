@@ -4,11 +4,15 @@ import { CartSummary } from "../../components/CartSummary/CartSummary";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 import { ProductTypes } from "../../types/ProductTypes";
 import { CartCountContext } from "../../contexts/CartCountContext";
+import { NotificationModal } from "../../components/NotificationModal/NotificationModal";
 
 export function Cart() {
 	const [cartProducts, setCartProducts] = useState<ProductTypes[]>([]);
 
 	const { updateCartCount } = useContext(CartCountContext);
+
+	const [showNotification, setShowNotification] = useState(false);
+	const [notificationMessage, setNotificationMessage] = useState("");
 
 	// Funkcja do wczytania produktów z localStorage
 	const updateCart = () => {
@@ -25,6 +29,12 @@ export function Cart() {
 		setCartProducts(updatedCart); // Zaktualizuj stan
 
 		updateCartCount();
+
+		setNotificationMessage("Usunięto produkt z koszyka!");
+		setShowNotification(true);
+		setTimeout(() => {
+			setShowNotification(false); // Ukryj powiadomienie po 3 sekundach
+		}, 3000);
 	};
 
 	// Wczytanie koszyka po pierwszym renderze
@@ -38,6 +48,7 @@ export function Cart() {
 				removeFromCart={removeFromCart}
 			/>
 			<CartSummary products={cartProducts} />
+			{showNotification && <NotificationModal message={notificationMessage} />}
 		</FlexContainer>
 	);
 }

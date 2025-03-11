@@ -1,0 +1,22 @@
+.modal {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	background: rgba(0, 0, 0, 0.8);
+	color: white;
+	padding: 16px;
+	border-radius: 8px;
+	opacity: 1;
+	transition: opacity 1s ease-in-out; /* Dodajemy płynne znikanie */
+	.title {
+		margin-bottom: 1rem;
+	}
+}
+
+.modal.hidden {
+	opacity: 0;
+}

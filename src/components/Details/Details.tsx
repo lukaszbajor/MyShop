@@ -5,7 +5,8 @@ import { FullWidthButton } from "../FullWidthButton/FullWidthButton";
 import { ProductTypes } from "../../types/ProductTypes";
 import { Accordion } from "../Accordion/Accordion";
 import { CartCountContext } from "../../contexts/CartCountContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { NotificationModal } from "../NotificationModal/NotificationModal";
 // import { supabase } from "../../supabaseClient";
 // import { useQuery } from "@tanstack/react-query";
 
@@ -15,16 +16,27 @@ interface ProductProps {
 
 export function Details({ product }: ProductProps) {
 	const { updateCartCount } = useContext(CartCountContext);
+	const [showNotification, setShowNotification] = useState(false);
+	const [notificationMessage, setNotificationMessage] = useState("");
 
 	function handleAddToCart() {
 		const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 		if (!cart.find((cartItem: ProductTypes) => cartItem.id === product.id)) {
 			cart.push(product);
 			localStorage.setItem("cart", JSON.stringify(cart));
-			alert("Produkt dodany do koszyka!");
+			setNotificationMessage("Produkt dodany do koszyka.");
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false); // Ukryj powiadomienie po 3 sekundach
+			}, 3000);
+			// Pokaż modal
 			updateCartCount();
 		} else {
-			alert("Ten produkt jest już w koszyku!");
+			setNotificationMessage("Ten produkt jest już w koszyku.");
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false); // Ukryj powiadomienie po 3 sekundach
+			}, 3000);
 		}
 	}
 
@@ -53,6 +65,7 @@ export function Details({ product }: ProductProps) {
 				</li>
 			</ul>
 			<Accordion items={accordionContent} />
+			{showNotification && <NotificationModal message={notificationMessage} />}
 		</div>
 	);
 }
