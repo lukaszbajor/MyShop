@@ -247,6 +247,7 @@ export function ProductsList() {
 						<p
 							style={{
 								textAlign: "center",
+								padding: "10px",
 								paddingBottom: "3rem",
 							}}
 						>
