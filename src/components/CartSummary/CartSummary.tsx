@@ -4,6 +4,7 @@ import { FullWidthButton } from "../FullWidthButton/FullWidthButton";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCarSide } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 interface CartSummaryProps {
 	products: ProductTypes[];
@@ -15,7 +16,7 @@ export function CartSummary({ products }: CartSummaryProps) {
 	// Funkcja do wczytania produktów z localStorage
 
 	// Wczytanie koszyka po pierwszym renderze
-
+	console.log(typeof products.length);
 	const deliveryCost = 49;
 	const minSumForFreeDelivery = 499.99;
 
@@ -40,7 +41,18 @@ export function CartSummary({ products }: CartSummaryProps) {
 				<p>Do zapłaty:</p>
 				<p>{totalCost.toFixed(2)}zł</p>
 			</div>
-			<FullWidthButton onClick={() => {}}>Do kasy</FullWidthButton>
+
+			<FullWidthButton>
+				<Link
+					to={products.length === 0 ? "/cart" : "/order"}
+					className={products.length === 0 ? styles.disabled : ""}
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					//@ts-ignore
+					disabled={products.length === 0 && "disabled"}
+				>
+					Do kasy
+				</Link>
+			</FullWidthButton>
 			<div
 				className={`${styles.deliveryInfo} ${
 					sum > minSumForFreeDelivery ? styles.freeDelivery : ""

@@ -3,12 +3,18 @@ import styles from "./FullWidthButton.module.scss";
 
 interface FullWidthButtonProps {
 	children: ReactNode;
-	onClick: () => void;
+	onClick?: () => void;
+	disabled?: boolean;
+	className?: string;
 }
 
-export function FullWidthButton({ children, onClick }: FullWidthButtonProps) {
+export function FullWidthButton({
+	children,
+	onClick,
+	disabled,
+}: FullWidthButtonProps) {
 	return (
-		<button onClick={onClick} className={styles.button}>
+		<button onClick={onClick} className={styles.button} disabled={disabled}>
 			{children}
 		</button>
 	);

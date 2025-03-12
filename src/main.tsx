@@ -17,6 +17,7 @@ import { MainPage } from "./views/MainPage/MainPage.tsx";
 import { Layout } from "./components/Layout/Layout.tsx";
 import { Favourites } from "./views/Favourites/Favourites.tsx";
 import { ProductDetails } from "./views/ProductDetails/ProductDetails.tsx";
+import { Order } from "./views/Order/Order.tsx";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,10 @@ const router = createBrowserRouter(
 				{
 					path: "/:gender?/:category/:subcategory/product_details/:id",
 					element: <ProductDetails />,
+				},
+				{
+					path: "/order",
+					element: <Order />,
 				},
 			],
 		},

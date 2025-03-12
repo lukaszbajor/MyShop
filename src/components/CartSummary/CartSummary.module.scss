@@ -10,6 +10,16 @@
 		border-bottom: 1px solid $color-text-grey;
 		padding-bottom: 1rem;
 	}
+	button {
+		padding: 0;
+	}
+	a {
+		display: block;
+		height: 100%;
+		width: 100%;
+		color: $color-white;
+		padding: 1rem 0;
+	}
 }
 
 .cartRow {
@@ -32,6 +42,12 @@
 	color: $color-success;
 	opacity: 0.6;
 	border: 1px solid $color-success;
+}
+
+.disabled {
+	// opacity: 0.5;
+	background-color: $color-text-grey;
+	cursor: default;
 }
 
 @media (max-width: 800px) {
