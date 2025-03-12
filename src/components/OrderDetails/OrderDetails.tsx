@@ -21,7 +21,12 @@ const orderSchema = yup.object().shape({
 	payment_method: yup.string().required("Wybierz metodę płatności"),
 });
 
-export function OrderDetails({ onOrderSubmit }) {
+interface onOrderSubmitProps {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	onOrderSubmit: () => void;
+}
+
+export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 	const [loading, setLoading] = useState(false);
 	const [cartProducts, setCartProducts] = useState([]);
 	const [totalPrice, setTotalPrice] = useState(0);
@@ -46,7 +51,8 @@ export function OrderDetails({ onOrderSubmit }) {
 		setCartProducts(storedCart);
 
 		const calculatedTotal = storedCart.reduce(
-			(acc, product) => acc + product.price_pln,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			(acc: any, product: { price_pln: any }) => acc + product.price_pln,
 			0
 		);
 		setTotalPrice(calculatedTotal);
@@ -73,13 +79,17 @@ export function OrderDetails({ onOrderSubmit }) {
 			setShowNotification(false); // Ukryj powiadomienie po 3 sekundach
 		}, 3000);
 	};
-
-	async function onSubmit(data) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async function onSubmit(data: { nick: any; city: any }) {
 		setLoading(true);
 
 		// Przygotowanie danych do wysłania
 		const productsList = cartProducts.map((product) => ({
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
 			name: product.product_name,
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
 			price: product.price_pln,
 		}));
 
@@ -125,10 +135,23 @@ export function OrderDetails({ onOrderSubmit }) {
 							<p>Brak produktów w koszyku.</p>
 						) : (
 							cartProducts.map((product, index) => (
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								//@ts-ignore
 								<li key={product.id}>
 									<span>
-										{index + 1}. {product.product_name} -{" "}
-										{product.price_pln.toFixed(2)} zł
+										{index + 1}.
+										{
+											// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+											//@ts-ignore
+											product.product_name
+										}
+										-
+										{
+											// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+											//@ts-ignore
+											product.price_pln.toFixed(2)
+										}
+										zł
 									</span>
 								</li>
 							))

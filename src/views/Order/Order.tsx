@@ -16,6 +16,7 @@ export function Order() {
 			}}
 		>
 			{!orderSubmitted ? (
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				<OrderDetails onOrderSubmit={() => setOrderSubmitted(true)} />
 			) : (
 				<div
