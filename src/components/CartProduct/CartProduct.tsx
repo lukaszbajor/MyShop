@@ -2,6 +2,8 @@ import styles from "./CartProduct.module.scss";
 import { ProductTypes } from "../../types/ProductTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { useContext } from "react";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 
 interface CartProductProps {
 	product: ProductTypes;
@@ -9,6 +11,7 @@ interface CartProductProps {
 }
 
 export function CartProduct({ product, removeFromCart }: CartProductProps) {
+	const [currency] = useContext(CurrencyContext) as ["PLN" | "USD" | "EUR"];
 	// Funkcja do usuwania produktu
 	function handleRemoveProduct() {
 		removeFromCart(product.id);
@@ -23,11 +26,25 @@ export function CartProduct({ product, removeFromCart }: CartProductProps) {
 						{product.brand}
 						<p className={styles.productName}>{product.product_name}</p>
 					</h3>
-					<p>{product.price_pln.toFixed(2)}zł</p>
+					<p>
+						{currency === "PLN"
+							? `${product.price_pln.toFixed(2)} zł`
+							: currency === "USD"
+							? `${product.price_usd.toFixed(2)} $`
+							: currency === "EUR"
+							? `${product.price_eur.toFixed(2)} €`
+							: null}
+					</p>
 				</div>
 				<p className={styles.priceRow}>
 					<span>Cena: </span>
-					{product.price_pln.toFixed(2)}zł
+					{currency === "PLN"
+						? `${product.price_pln.toFixed(2)} zł`
+						: currency === "USD"
+						? `${product.price_usd.toFixed(2)} $`
+						: currency === "EUR"
+						? `${product.price_eur.toFixed(2)} €`
+						: null}
 				</p>
 				<div className={styles.buttonRow}>
 					<button onClick={handleRemoveProduct}>

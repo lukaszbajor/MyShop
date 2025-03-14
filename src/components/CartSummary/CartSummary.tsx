@@ -5,6 +5,8 @@ import { FullWidthButton } from "../FullWidthButton/FullWidthButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCarSide } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 
 interface CartSummaryProps {
 	products: ProductTypes[];
@@ -13,33 +15,58 @@ interface CartSummaryProps {
 // { products }: CartSummaryProps
 
 export function CartSummary({ products }: CartSummaryProps) {
+	const [currency] = useContext(CurrencyContext) as ["PLN" | "USD" | "EUR"];
 	// Funkcja do wczytania produktów z localStorage
 
 	// Wczytanie koszyka po pierwszym renderze
 	console.log(typeof products.length);
-	const deliveryCost = 49;
-	const minSumForFreeDelivery = 499.99;
+	const deliveryCost = {
+		PLN: 29,
+		USD: 14,
+		EUR: 12,
+	};
+	const minSumForFreeDelivery = {
+		PLN: 499.99,
+		USD: 125.99,
+		EUR: 122.99,
+	};
 
 	let sum = 0;
 	products.forEach((product) => {
-		sum += product.price_pln;
+		if (currency === "PLN") {
+			sum += product.price_pln;
+		} else if (currency === "USD") {
+			sum += product.price_usd;
+		} else {
+			sum += product.price_eur;
+		}
 	});
 
-	const totalCost = sum > minSumForFreeDelivery ? sum : sum + deliveryCost;
+	const totalCost =
+		sum > minSumForFreeDelivery[currency] ? sum : sum + deliveryCost[currency];
 	return (
 		<div className={styles.cartSummary}>
 			<h2>Podsumowanie</h2>
 			<div className={styles.cartRow}>
 				<p>Wartość produktów:</p>
-				<p>{sum.toFixed(2)}zł</p>
+				<p>
+					{sum.toFixed(2)}{" "}
+					{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
+				</p>
 			</div>
 			<div className={styles.cartRow}>
-				<p>Koszt dostawy:</p>
-				<p>{sum > minSumForFreeDelivery ? 0 : deliveryCost}zł</p>
+				<p>Koszt dostawy: </p>
+				<p>
+					{sum > minSumForFreeDelivery[currency] ? 0 : deliveryCost[currency]}{" "}
+					{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
+				</p>
 			</div>
 			<div className={`${styles.cartRow} ${styles.summaryRow}`}>
 				<p>Do zapłaty:</p>
-				<p>{totalCost.toFixed(2)}zł</p>
+				<p>
+					{totalCost.toFixed(2) + " "}
+					{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
+				</p>
 			</div>
 
 			<FullWidthButton>
@@ -55,11 +82,14 @@ export function CartSummary({ products }: CartSummaryProps) {
 			</FullWidthButton>
 			<div
 				className={`${styles.deliveryInfo} ${
-					sum > minSumForFreeDelivery ? styles.freeDelivery : ""
+					sum > minSumForFreeDelivery[currency] ? styles.freeDelivery : ""
 				}`}
 			>
 				<FontAwesomeIcon icon={faCarSide} />
-				<p>Darmowa dostawa od {minSumForFreeDelivery} zł</p>
+				<p>
+					Darmowa dostawa od {minSumForFreeDelivery[currency]}{" "}
+					{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
+				</p>
 			</div>
 		</div>
 	);

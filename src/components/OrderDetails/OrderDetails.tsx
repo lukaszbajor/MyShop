@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import styles from "./OrderDetails.module.scss";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient";
 import { CartCountContext } from "../../contexts/CartCountContext";
 import { NotificationModal } from "../NotificationModal/NotificationModal";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 
 const orderSchema = yup.object().shape({
 	nick: yup.string().required("Nick jest wymagany"),
@@ -32,11 +34,20 @@ export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [showNotification, setShowNotification] = useState(false);
 	const [notificationMessage, setNotificationMessage] = useState("");
+	const [currency] = useContext(CurrencyContext) as ["PLN" | "USD" | "EUR"];
 
 	const { updateCartCount } = useContext(CartCountContext);
 
-	const delivery = 499;
-	const deliveryCost = 49;
+	const deliveryCost = {
+		PLN: 49,
+		USD: 14,
+		EUR: 12,
+	};
+	const minSumForFreeDelivery = {
+		PLN: 499.99,
+		USD: 125.99,
+		EUR: 122.99,
+	};
 
 	const {
 		register,
@@ -52,11 +63,18 @@ export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 
 		const calculatedTotal = storedCart.reduce(
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(acc: any, product: { price_pln: any }) => acc + product.price_pln,
+			(
+				acc: any,
+				product: { price_pln: any; price_usd: any; price_eur: any }
+			) => {
+				if (currency === "PLN") return acc + product.price_pln;
+				if (currency === "USD") return acc + product.price_usd;
+				return acc + product.price_eur;
+			},
 			0
 		);
 		setTotalPrice(calculatedTotal);
-	}, []);
+	}, [currency]);
 
 	const handleResetCart = () => {
 		localStorage.setItem("cart", JSON.stringify([])); // Resetujemy koszyk
@@ -88,14 +106,26 @@ export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			//@ts-ignore
 			name: product.product_name,
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			//@ts-ignore
-			price: product.price_pln,
+
+			price:
+				currency === "PLN"
+					? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					  //@ts-ignore
+					  product.price_pln
+					: currency === "USD"
+					? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					  //@ts-ignore
+					  product.price_usd
+					: // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					  //@ts-ignore
+					  product.price_eur,
 		}));
 
 		// Całkowita cena, jeśli jest mniejsza niż 499 PLN to dodajemy koszt wysyłki
 		const total =
-			totalPrice < delivery ? totalPrice + deliveryCost : totalPrice;
+			totalPrice < minSumForFreeDelivery[currency]
+				? totalPrice + deliveryCost[currency]
+				: totalPrice;
 
 		const { error } = await supabase.from("orders").insert([
 			{
@@ -149,17 +179,32 @@ export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 										{
 											// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 											//@ts-ignore
-											product.price_pln.toFixed(2)
-										}
-										zł
+											(currency === "PLN"
+												? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+												  //@ts-ignore
+												  product.price_pln
+												: currency === "USD"
+												? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+												  //@ts-ignore
+												  product.price_usd
+												: // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+												  //@ts-ignore
+												  product.price_eur
+											).toFixed(2)
+										}{" "}
+										{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
 									</span>
 								</li>
 							))
 						)}
 					</ul>
-					{totalPrice < delivery ? (
+
+					{totalPrice < minSumForFreeDelivery[currency] ? (
 						<p style={{ color: "red", marginTop: "10px" }}>
-							<b>Koszt wysyłki: 49 PLN</b>
+							<b>
+								Koszt wysyłki: {deliveryCost[currency]}{" "}
+								{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
+							</b>
 						</p>
 					) : (
 						<p style={{ color: "green", marginTop: "10px" }}>
@@ -167,10 +212,16 @@ export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 						</p>
 					)}
 					<div className={styles.totalPrice}>
-						{totalPrice > delivery ? (
-							<h4>Łączna cena: {totalPrice.toFixed(2)} PLN</h4>
+						{totalPrice > minSumForFreeDelivery[currency] ? (
+							<h4>
+								Łączna cena: {totalPrice.toFixed(2)}{" "}
+								{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
+							</h4>
 						) : (
-							<h4>Łączna cena: {(totalPrice + deliveryCost).toFixed(2)} PLN</h4>
+							<h4>
+								Łączna cena: {(totalPrice + deliveryCost[currency]).toFixed(2)}{" "}
+								{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
+							</h4>
 						)}
 					</div>
 				</div>

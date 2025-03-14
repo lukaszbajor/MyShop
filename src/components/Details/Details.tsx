@@ -7,6 +7,7 @@ import { Accordion } from "../Accordion/Accordion";
 import { CartCountContext } from "../../contexts/CartCountContext";
 import { useContext, useState } from "react";
 import { NotificationModal } from "../NotificationModal/NotificationModal";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 // import { supabase } from "../../supabaseClient";
 // import { useQuery } from "@tanstack/react-query";
 
@@ -18,6 +19,7 @@ export function Details({ product }: ProductProps) {
 	const { updateCartCount } = useContext(CartCountContext);
 	const [showNotification, setShowNotification] = useState(false);
 	const [notificationMessage, setNotificationMessage] = useState("");
+	const [currency] = useContext(CurrencyContext) as ["PLN" | "USD" | "EUR"];
 
 	function handleAddToCart() {
 		const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -48,7 +50,15 @@ export function Details({ product }: ProductProps) {
 		<div className={styles.details}>
 			<h2>{product.brand}</h2>
 			<p className={styles.productName}>{product.product_name}</p>
-			<p className={styles.price}>{product.price_pln}zł</p>
+			<p className={styles.price}>
+				{currency === "PLN"
+					? `${product.price_pln.toFixed(2)} zł`
+					: currency === "USD"
+					? `${product.price_usd.toFixed(2)} $`
+					: currency === "EUR"
+					? `${product.price_eur.toFixed(2)} €`
+					: null}
+			</p>
 
 			<FullWidthButton onClick={handleAddToCart}>
 				Dodaj do koszyka

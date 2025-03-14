@@ -10,6 +10,7 @@ export interface ProductTypes {
 	brand: string;
 	price_pln: number;
 	price_usd: number;
+	price_eur: number;
 	photos: string[];
 	description: string;
 	maintenance_info: string;

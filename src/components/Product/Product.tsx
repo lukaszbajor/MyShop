@@ -3,8 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { ProductTypes } from "../../types/ProductTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NotificationModal } from "../NotificationModal/NotificationModal";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 
 interface ProductProps {
 	product: ProductTypes;
@@ -15,6 +16,7 @@ export function Product({ product }: ProductProps) {
 	const [isFavourite, setIsFavourite] = useState(false); // 🆕 Stan ulubionego produktu
 	const [showNotification, setShowNotification] = useState(false);
 	const [notificationMessage, setNotificationMessage] = useState("");
+	const [currency] = useContext(CurrencyContext) as ["PLN" | "USD" | "EUR"];
 
 	useEffect(() => {
 		const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
@@ -58,7 +60,15 @@ export function Product({ product }: ProductProps) {
 				>
 					<img src={product.photos[0]} alt="zdjęcie produktu" />
 					<h3>{product.product_name}</h3>
-					<p>{product.price_pln.toFixed(2)}zł</p>
+					<p>
+						{currency === "PLN"
+							? `${product.price_pln.toFixed(2)} zł`
+							: currency === "USD"
+							? `${product.price_usd.toFixed(2)} $`
+							: currency === "EUR"
+							? `${product.price_eur.toFixed(2)} €`
+							: null}
+					</p>
 				</Link>
 				{product.is_bestseller && (
 					<div className={styles.bestseller}>bestseller</div>

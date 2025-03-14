@@ -5,6 +5,7 @@ import { faClose, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
 import { CartCountContext } from "../../contexts/CartCountContext";
 import { NotificationModal } from "../NotificationModal/NotificationModal";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 
 // const [showNotification, setShowNotification] = useState(false);
 // 	const [notificationMessage, setNotificationMessage] = useState("");
@@ -27,6 +28,7 @@ export function FavouriteProduct({ product, onRemove }: FavouriteProductProps) {
 	const [showNotification, setShowNotification] = useState(false);
 	const [notificationMessage, setNotificationMessage] = useState("");
 	const { updateCartCount } = useContext(CartCountContext);
+	const [currency] = useContext(CurrencyContext) as ["PLN" | "USD" | "EUR"];
 
 	function handleAddToCart(product: ProductTypes) {
 		const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -75,11 +77,25 @@ export function FavouriteProduct({ product, onRemove }: FavouriteProductProps) {
 						{product.brand}
 						<p className={styles.productName}>{product.product_name}</p>
 					</h3>
-					<p>{product.price_pln.toFixed(2)}zł</p>
+					<p>
+						{currency === "PLN"
+							? `${product.price_pln.toFixed(2)} zł`
+							: currency === "USD"
+							? `${product.price_usd.toFixed(2)} $`
+							: currency === "EUR"
+							? `${product.price_eur.toFixed(2)} €`
+							: null}
+					</p>
 				</div>
 				<p className={styles.priceRow}>
 					<span>Cena: </span>
-					{product.price_pln.toFixed(2)}zł
+					{currency === "PLN"
+						? `${product.price_pln.toFixed(2)} zł`
+						: currency === "USD"
+						? `${product.price_usd.toFixed(2)} $`
+						: currency === "EUR"
+						? `${product.price_eur.toFixed(2)} €`
+						: null}
 				</p>
 				<div className={styles.buttonRow}>
 					<button
