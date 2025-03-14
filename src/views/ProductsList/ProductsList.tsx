@@ -10,11 +10,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHourglass } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../../components/Loader/Loader";
 import { CATEGORIES } from "../../constants/categories";
+import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function getCategoryName(categoryPath: string) {
 	const category = CATEGORIES.find((c) => c.path === categoryPath);
-	return category ? category.categoryName : null; // Zwraca nazwę kategorii
+	return category ? category.categoryName : null;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -27,13 +28,15 @@ export function getSubcategoryName(
 		const subcategory = category.subcategories.find(
 			(sc) => sc.path === subcategoryPath
 		);
-		return subcategory ? subcategory.categoryName : null; // Zwraca nazwę subkategorii
+		return subcategory ? subcategory.categoryName : null;
 	}
 	return null;
 }
 
 export function ProductsList() {
 	const { gender, category, subcategory } = useParams();
+	const [currentPage, setCurrentPage] = useState(1);
+	const productsPerPage = 8;
 
 	const categoryName = category ? getCategoryName(category) : null;
 	const subcategoryName = subcategory
@@ -48,175 +51,34 @@ export function ProductsList() {
 		isError,
 		error,
 	} = useQuery({
-		queryKey: ["products", { category, subcategory, gender }], // klucz zależny od parametrów
+		queryKey: ["products", { category, subcategory, gender }],
 		queryFn: fetchProducts,
-		enabled: !!category || !!subcategory || !!gender, // odpala tylko gdy mamy jakikolwiek filtr
+		enabled: !!category || !!subcategory || !!gender,
 	});
 
-	// if (isLoading) return <p>Ładowanie...</p>;
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [products]);
+
 	if (isError) return <p>❌ Błąd: {error.message}</p>;
 
-	// Jeśli dane są ładowane, wyświetl loader
 	if (isLoading) return <Loader />;
 
-	// Jeśli produkty zostały załadowane, ale lista jest pusta, wyświetl komunikat o braku produktów
-	// if (!isLoading && (!products || products.length === 0)) {
-	// 	return <p>Brak produktów w sklepie.</p>;
-	// }
-	// const products = [
-	// 	{
-	// 		id: 13,
-	// 		gender: "men",
-	// 		category: "odziez",
-	// 		subcategory: "koszulki",
-	// 		productName: "T-shirt 4",
-	// 		brand: "Sun Tzu",
-	// 		pricePLN: 129,
-	// 		priceUSD: 39,
-	// 		photos: [
-	// 			"https://cdn.pixabay.com/photo/2016/03/25/09/04/t-shirt-1278404_960_720.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-3.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-4.jpg",
-	// 		],
-	// 		description:
-	// 			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
-	// 		maintenanceInfo:
-	// 			"Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu",
-	// 	},
-	// 	{
-	// 		id: 14,
-	// 		gender: "men",
-	// 		category: "odziez",
-	// 		subcategory: "koszulki",
-	// 		productName: "T-Shirt",
-	// 		brand: "Top Brand",
-	// 		pricePLN: 49,
-	// 		priceUSD: 10,
-	// 		photos: [
-	// 			"https://cdn.pixabay.com/photo/2016/03/25/09/04/t-shirt-1278404_960_720.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-4.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-3.jpg",
-	// 		],
-	// 		description:
-	// 			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
-	// 		maintenanceInfo:
-	// 			"Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu",
-	// 	},
-	// 	{
-	// 		id: 15,
-	// 		gender: "men",
-	// 		category: "odziez",
-	// 		subcategory: "koszulki",
-	// 		productName: "T-shirt 2",
-	// 		brand: "Sun Tzu",
-	// 		pricePLN: 199,
-	// 		priceUSD: 49,
-	// 		photos: [
-	// 			"https://cdn.pixabay.com/photo/2016/03/25/09/04/t-shirt-1278404_960_720.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-3.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-4.jpg",
-	// 		],
-	// 		description:
-	// 			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
-	// 		maintenanceInfo:
-	// 			"Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu",
-	// 	},
-	// 	{
-	// 		id: 16,
-	// 		gender: "men",
-	// 		category: "odziez",
-	// 		subcategory: "koszulki",
-	// 		productName: "T-shirt 3",
-	// 		brand: "Sun Tzu",
-	// 		pricePLN: 199,
-	// 		priceUSD: 49,
-	// 		photos: [
-	// 			"https://cdn.pixabay.com/photo/2016/03/25/09/04/t-shirt-1278404_960_720.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-4.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-1.jpg",
-	// 		],
-	// 		description:
-	// 			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
-	// 		maintenanceInfo:
-	// 			"Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu",
-	// 	},
-	// 	{
-	// 		id: 17,
-	// 		gender: "men",
-	// 		category: "odziez",
-	// 		subcategory: "koszulki",
-	// 		productName: "T-shirt 4",
-	// 		brand: "Sun Tzu",
-	// 		pricePLN: 129,
-	// 		priceUSD: 39,
-	// 		photos: [
-	// 			"https://cdn.pixabay.com/photo/2016/03/25/09/04/t-shirt-1278404_960_720.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-3.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-4.jpg",
-	// 		],
-	// 		description:
-	// 			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
-	// 		maintenanceInfo:
-	// 			"Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu",
-	// 	},
-	// 	{
-	// 		id: 18,
-	// 		gender: "men",
-	// 		category: "odziez",
-	// 		subcategory: "koszulki",
-	// 		productName: "T-Shirt",
-	// 		brand: "Top Brand",
-	// 		pricePLN: 49,
-	// 		priceUSD: 10,
-	// 		photos: [
-	// 			"https://cdn.pixabay.com/photo/2016/03/25/09/04/t-shirt-1278404_960_720.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-4.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-3.jpg",
-	// 		],
-	// 		description:
-	// 			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
-	// 		maintenanceInfo:
-	// 			"Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu",
-	// 	},
-	// 	{
-	// 		id: 19,
-	// 		gender: "men",
-	// 		category: "odziez",
-	// 		subcategory: "koszulki",
-	// 		productName: "T-shirt 2",
-	// 		brand: "Sun Tzu",
-	// 		pricePLN: 199,
-	// 		priceUSD: 49,
-	// 		photos: [
-	// 			"https://cdn.pixabay.com/photo/2016/03/25/09/04/t-shirt-1278404_960_720.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-3.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-4.jpg",
-	// 		],
-	// 		description:
-	// 			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
-	// 		maintenanceInfo:
-	// 			"Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu",
-	// 	},
-	// 	{
-	// 		id: 20,
-	// 		gender: "men",
-	// 		category: "odziez",
-	// 		subcategory: "koszulki",
-	// 		productName: "T-shirt 3",
-	// 		brand: "Sun Tzu",
-	// 		pricePLN: 199,
-	// 		priceUSD: 49,
-	// 		photos: [
-	// 			"https://cdn.pixabay.com/photo/2016/03/25/09/04/t-shirt-1278404_960_720.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-4.jpg",
-	// 			"http://localhost:3000/product-photos/man-t-shirt-1.jpg",
-	// 		],
-	// 		description:
-	// 			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
-	// 		maintenanceInfo:
-	// 			"Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu",
-	// 	},
-	// ];
+	const totalProducts = products?.length || 0;
+
+	const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+	const indexOfLastProduct = currentPage * productsPerPage;
+	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+	const currentProducts = products?.slice(
+		indexOfFirstProduct,
+		indexOfLastProduct
+	);
+
+	const paginate = (pageNumber: number) => {
+		setCurrentPage(pageNumber);
+	};
+
 	return (
 		<FlexContainer>
 			<ExpandableMenu />
@@ -229,9 +91,15 @@ export function ProductsList() {
 							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 							//@ts-ignore
 							headerText={subcategoryName ? subcategoryName : categoryName}
-							products={products}
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							//@ts-ignore
+							products={currentProducts}
 						/>
-						<Pagination numberOfPages={5} />
+						<Pagination
+							numberOfPages={totalPages || 1}
+							currentPage={currentPage}
+							paginate={paginate}
+						/>
 					</>
 				) : (
 					<div

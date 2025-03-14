@@ -4,13 +4,23 @@
 	align-items: center;
 	gap: 1rem;
 	margin: 2rem 0;
-	li {
+	// li {
+	// 	cursor: pointer;
+	// 	a {
+	// 		&:global(.active) {
+	// 			font-weight: 700;
+	// 			color: $color-theme-main;
+	// 		}
+	// 	}
+	// }
+	button {
+		background: none;
+		border: none;
 		cursor: pointer;
-		a {
-			&:global(.active) {
-				font-weight: 700;
-				color: $color-theme-main;
-			}
-		}
+		color: $color-text-default;
+	}
+	.active {
+		font-weight: 700;
+		color: $color-theme-main;
 	}
 }

@@ -4,7 +4,7 @@ import { Hero } from "../../components/Hero/Hero";
 import { useParams } from "react-router-dom";
 // import { useProductsQuery } from "../../hooks/useProducts";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProducts } from "../../api/products";
+import { fetchMainProducts } from "../../api/mainproducts";
 import Loader from "../../components/Loader/Loader";
 
 export function MainPage() {
@@ -96,16 +96,16 @@ export function MainPage() {
 		error,
 	} = useQuery({
 		queryKey: ["products", { category, subcategory, gender }], // klucz zależny od parametrów
-		queryFn: fetchProducts,
+		queryFn: fetchMainProducts,
 		enabled: !!category || !!subcategory || !!gender, // odpala tylko gdy mamy jakikolwiek filtr
 	});
 
 	// if (isLoading) return <p>Ładowanie...</p>;
 	if (isError) return <p>❌ Błąd: {error.message}</p>;
 
-	const bestsellerProducts = products?.filter(
-		(product) => product.is_bestseller
-	);
+	const bestsellerProducts = products
+		?.filter((product) => product.is_bestseller)
+		.slice(0, 4);
 
 	return (
 		<>

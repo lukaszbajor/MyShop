@@ -46,7 +46,7 @@ const router = createBrowserRouter(
 					element: <Favourites />,
 				},
 				{
-					path: "/:gender?/:category/:subcategory?",
+					path: "/:gender/:category?/:subcategory?",
 					element: <ProductsList />,
 				},
 				{
