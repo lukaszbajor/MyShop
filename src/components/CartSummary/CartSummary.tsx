@@ -57,7 +57,9 @@ export function CartSummary({ products }: CartSummaryProps) {
 			<div className={styles.cartRow}>
 				<p>Koszt dostawy: </p>
 				<p>
-					{sum > minSumForFreeDelivery[currency] ? 0 : deliveryCost[currency]}{" "}
+					{sum > minSumForFreeDelivery[currency]
+						? 0
+						: deliveryCost[currency].toFixed(2)}{" "}
 					{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
 				</p>
 			</div>

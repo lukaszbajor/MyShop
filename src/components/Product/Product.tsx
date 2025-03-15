@@ -52,36 +52,34 @@ export function Product({ product }: ProductProps) {
 	).some((fav: ProductTypes) => fav.id === product.id);
 
 	return (
-		<>
-			<div style={{ position: "relative", overflow: "hidden" }}>
-				<Link
-					to={`/${gender}/${product.category_path}/${product.subcategory_path}/product_details/${product.id}`}
-					className={styles.product}
-				>
-					<img src={product.photos[0]} alt="zdjęcie produktu" />
-					<h3>{product.product_name}</h3>
-					<p>
-						{currency === "PLN"
-							? `${product.price_pln.toFixed(2)} zł`
-							: currency === "USD"
-							? `${product.price_usd.toFixed(2)} $`
-							: currency === "EUR"
-							? `${product.price_eur.toFixed(2)} €`
-							: null}
-					</p>
-				</Link>
-				{product.is_bestseller && (
-					<div className={styles.bestseller}>bestseller</div>
-				)}
-				<FontAwesomeIcon
-					icon={faHeart}
-					className={`${styles.heart} ${
-						checkFavouriteProduct ? styles.isFavourite : ""
-					}`}
-					onClick={handleAddToFavourites}
-				/>
-			</div>
+		<div className={styles.wrapper}>
+			<Link
+				to={`/${gender}/${product.category_path}/${product.subcategory_path}/product_details/${product.id}`}
+				className={styles.product}
+			>
+				<img src={product.photos[0]} alt="zdjęcie produktu" />
+				<h3>{product.product_name}</h3>
+				<p>
+					{currency === "PLN"
+						? `${product.price_pln.toFixed(2)} zł`
+						: currency === "USD"
+						? `${product.price_usd.toFixed(2)} $`
+						: currency === "EUR"
+						? `${product.price_eur.toFixed(2)} €`
+						: null}
+				</p>
+			</Link>
+			{product.is_bestseller && (
+				<div className={styles.bestseller}>bestseller</div>
+			)}
+			<FontAwesomeIcon
+				icon={faHeart}
+				className={`${styles.heart} ${
+					checkFavouriteProduct ? styles.isFavourite : ""
+				}`}
+				onClick={handleAddToFavourites}
+			/>
 			{showNotification && <NotificationModal message={notificationMessage} />}
-		</>
+		</div>
 	);
 }

@@ -39,7 +39,7 @@ export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 	const { updateCartCount } = useContext(CartCountContext);
 
 	const deliveryCost = {
-		PLN: 49,
+		PLN: 29.9,
 		USD: 14,
 		EUR: 12,
 	};
@@ -168,14 +168,14 @@ export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								//@ts-ignore
 								<li key={product.id}>
-									<span>
+									<span className={styles.orderProduct}>
 										{index + 1}.
 										{
 											// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 											//@ts-ignore
 											product.product_name
-										}
-										-
+										}{" "}
+										-{" "}
 										{
 											// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 											//@ts-ignore
@@ -202,7 +202,7 @@ export function OrderDetails({ onOrderSubmit }: onOrderSubmitProps) {
 					{totalPrice < minSumForFreeDelivery[currency] ? (
 						<p style={{ color: "red", marginTop: "10px" }}>
 							<b>
-								Koszt wysyłki: {deliveryCost[currency]}{" "}
+								Koszt wysyłki: {deliveryCost[currency].toFixed(2)}{" "}
 								{currency === "PLN" ? "zł" : currency === "USD" ? "$" : "€"}
 							</b>
 						</p>
